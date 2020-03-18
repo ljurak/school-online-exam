@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 class UserConfiguration {
 
     @Bean
-    UserFacade userFacade(UserRepository userRepository, StudentRepository studentRepository) {
+    UserFacade userFacade(UserRepository userRepository, StudentRepository studentRepository, TeacherRepository teacherRepository) {
         UserValidator userValidator = new UserValidator(userRepository);
-        UserFactory userFactory = new UserFactory(userValidator, userRepository, studentRepository);
+        UserFactory userFactory = new UserFactory(userValidator, userRepository, studentRepository, teacherRepository);
         return new UserFacade(userFactory);
     }
 }
