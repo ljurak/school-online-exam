@@ -1,6 +1,7 @@
 package com.schoolonline.app.user;
 
 import com.schoolonline.app.common.entity.BaseEntity;
+import com.schoolonline.app.user.dto.NewUserDTO;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,19 +23,38 @@ class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    public String getFirstName() {
+    User() {
+    }
+
+    private User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    String getFirstName() {
         return firstName;
     }
 
-    public String getLastName() {
+    String getLastName() {
         return lastName;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
-    public String getPassword() {
+    String getPassword() {
         return password;
+    }
+
+    static User fromDTO(NewUserDTO newUserDTO) {
+        return new User(
+                newUserDTO.getFirstName(),
+                newUserDTO.getLastName(),
+                newUserDTO.getEmail(),
+                newUserDTO.getPassword()
+        );
     }
 }
