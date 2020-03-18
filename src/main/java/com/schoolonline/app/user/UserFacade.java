@@ -2,6 +2,7 @@ package com.schoolonline.app.user;
 
 import com.schoolonline.app.user.dto.NewUserDTO;
 import com.schoolonline.app.user.dto.StudentDTO;
+import com.schoolonline.app.user.dto.TeacherDTO;
 import com.schoolonline.app.user.error.UserError;
 import io.vavr.control.Either;
 
@@ -17,5 +18,11 @@ public class UserFacade {
         return userFactory
                 .addStudent(newUserDTO)
                 .map(Student::toDTO);
+    }
+
+    public Either<UserError, TeacherDTO> addTeacher(NewUserDTO newUserDTO) {
+        return userFactory
+                .addTeacher(newUserDTO)
+                .map(Teacher::toDTO);
     }
 }
