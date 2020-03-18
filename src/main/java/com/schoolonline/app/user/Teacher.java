@@ -20,6 +20,17 @@ class Teacher extends BaseEntity {
         return user;
     }
 
+    Teacher() {
+    }
+
+    private Teacher(User user) {
+        this.user = user;
+    }
+
+    static Teacher fromUser(User user) {
+        return new Teacher(user);
+    }
+
     TeacherDTO toDTO() {
         return new TeacherDTO(getId(), user.getFirstName(), user.getLastName(), user.getEmail());
     }
