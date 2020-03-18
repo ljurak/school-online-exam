@@ -12,10 +12,17 @@ class UserFactory {
 
     private StudentRepository studentRepository;
 
-    UserFactory(UserValidator userValidator, UserRepository userRepository, StudentRepository studentRepository) {
+    private TeacherRepository teacherRepository;
+
+    UserFactory(
+            UserValidator userValidator,
+            UserRepository userRepository,
+            StudentRepository studentRepository,
+            TeacherRepository teacherRepository) {
         this.userValidator = userValidator;
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
+        this.teacherRepository = teacherRepository;
     }
 
     Either<UserError, Student> addStudent(NewUserDTO newUserDTO) {
@@ -25,13 +32,25 @@ class UserFactory {
                 .map(this::createStudent);
     }
 
-    User createUser(NewUserDTO newUserDTO) {
+    Either<UserError, Teacher> addTeacher(NewUserDTO newUserDTO) {
+        return userValidator
+                .validateUser(newUserDTO)
+                .map(this::createUser)
+                .map(this::createTeacher);
+    }
+
+    private User createUser(NewUserDTO newUserDTO) {
         User user = User.fromDTO(newUserDTO);
         return userRepository.save(user);
     }
 
-    Student createStudent(User user) {
+    private Student createStudent(User user) {
         Student student = Student.fromUser(user);
         return studentRepository.save(student);
+    }
+
+    private Teacher createTeacher(User user) {
+        Teacher teacher = Teacher.fromUser(user);
+        return teacherRepository.save(teacher);
     }
 }
