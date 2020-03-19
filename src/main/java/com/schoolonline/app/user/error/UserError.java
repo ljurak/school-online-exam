@@ -1,6 +1,8 @@
 package com.schoolonline.app.user.error;
 
-public enum UserError {
+import com.schoolonline.app.common.error.HttpResponseError;
+
+public enum UserError implements HttpResponseError {
 
     MISSING_FIRSTNAME("Missing first name", 400),
     INVALID_FIRSTNAME("Invalid first name", 400),
@@ -21,10 +23,12 @@ public enum UserError {
         this.httpStatus = httpStatus;
     }
 
+    @Override
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    @Override
     public int getHttpStatus() {
         return httpStatus;
     }
