@@ -10,6 +10,8 @@ class UserConfiguration {
     UserFacade userFacade(UserRepository userRepository, StudentRepository studentRepository, TeacherRepository teacherRepository) {
         UserValidator userValidator = new UserValidator(userRepository);
         UserFactory userFactory = new UserFactory(userValidator, userRepository, studentRepository, teacherRepository);
-        return new UserFacade(userFactory);
+        StudentService studentService = new StudentService(userFactory, studentRepository);
+        TeacherService teacherService = new TeacherService(userFactory, teacherRepository);
+        return new UserFacade(studentService, teacherService);
     }
 }
