@@ -26,22 +26,22 @@ class UserFactory {
     }
 
     Either<UserError, Student> addStudent(NewUserDTO newUserDTO) {
-        return userValidator
-                .validateUser(newUserDTO)
-                .map(this::createUser)
+        return createUser(newUserDTO)
                 .map(this::createStudent);
     }
 
     Either<UserError, Teacher> addTeacher(NewUserDTO newUserDTO) {
-        return userValidator
-                .validateUser(newUserDTO)
-                .map(this::createUser)
+        return createUser(newUserDTO)
                 .map(this::createTeacher);
     }
 
-    private User createUser(NewUserDTO newUserDTO) {
-        User user = User.fromDTO(newUserDTO);
-        return userRepository.save(user);
+    private Either<UserError, User> createUser(NewUserDTO newUserDTO) {
+        return userValidator
+                .validateUser(newUserDTO)
+                .map(newUser -> {
+                    User user = User.fromDTO(newUser);
+                    return userRepository.save(user);
+                });
     }
 
     private Student createStudent(User user) {
