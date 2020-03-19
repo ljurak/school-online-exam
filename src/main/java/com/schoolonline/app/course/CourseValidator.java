@@ -3,14 +3,18 @@ package com.schoolonline.app.course;
 import com.schoolonline.app.common.utils.Validator;
 import com.schoolonline.app.course.dto.NewCourseDTO;
 import com.schoolonline.app.course.error.CourseError;
+import com.schoolonline.app.user.UserFacade;
 import io.vavr.control.Either;
 
 class CourseValidator {
 
     private Validator validator;
 
-    CourseValidator(Validator validator) {
+    private UserFacade userFacade;
+
+    CourseValidator(Validator validator, UserFacade userFacade) {
         this.validator = validator;
+        this.userFacade = userFacade;
     }
 
     Either<CourseError, NewCourseDTO> validateCourse(NewCourseDTO newCourseDTO) {
@@ -53,6 +57,8 @@ class CourseValidator {
     private Either<CourseError, NewCourseDTO> validateTeacherId(NewCourseDTO newCourseDTO) {
         if (validator.isNull(newCourseDTO.getTeacherId())) {
             return Either.left(CourseError.MISSING_TEACHER_ID);
+        } else if (userFacade.findTeacherById(newCourseDTO.getTeacherId()).isEmpty()) {
+            return Either.left(CourseError.TEACHER_NOT_FOUND);
         }
 
         return Either.right(newCourseDTO);
