@@ -9,7 +9,7 @@ class CourseValidator {
 
     private Validator validator;
 
-    public CourseValidator(Validator validator) {
+    CourseValidator(Validator validator) {
         this.validator = validator;
     }
 
