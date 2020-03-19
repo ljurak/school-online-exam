@@ -12,7 +12,9 @@ public enum UserError implements HttpResponseError {
     INVALID_EMAIL("Invalid email", 400),
     DUPLICATED_EMAIL("Duplicated email", 400),
     MISSING_PASSWORD("Missing password", 400),
-    INVALID_PASSWORD("Invalid password", 400);
+    INVALID_PASSWORD("Invalid password", 400),
+    STUDENT_NOT_FOUND("Student not found", 404),
+    TEACHER_NOT_FOUND("Teacher not found", 404);
 
     private String errorMessage;
 
