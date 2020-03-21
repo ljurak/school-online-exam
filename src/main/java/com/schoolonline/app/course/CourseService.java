@@ -3,6 +3,7 @@ package com.schoolonline.app.course;
 import com.schoolonline.app.course.dto.CourseDTO;
 import com.schoolonline.app.course.dto.NewCourseDTO;
 import com.schoolonline.app.course.error.CourseError;
+import io.vavr.collection.List;
 import io.vavr.control.Either;
 
 class CourseService {
@@ -19,6 +20,12 @@ class CourseService {
     Either<CourseError, CourseDTO> addCourse(NewCourseDTO newCourseDTO) {
         return courseFactory
                 .addCourse(newCourseDTO)
+                .map(Course::toDTO);
+    }
+
+    List<CourseDTO> findCoursesByTeacherId(Long id) {
+        return courseRepository
+                .findCoursesByTeacherId(id)
                 .map(Course::toDTO);
     }
 }
