@@ -20,7 +20,7 @@ public class CourseFacade {
         return courseService.addCourse(newCourseDTO);
     }
 
-    public List<CourseDTO> findCoursesByTeacherId(Long id) {
-        return courseService.findCoursesByTeacherId(id);
+    public List<CourseDTO> findCoursesByTeacherId(Long teacherId) {
+        return courseService.findCoursesByTeacherId(teacherId);
     }
 }

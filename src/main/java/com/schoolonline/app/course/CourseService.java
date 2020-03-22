@@ -23,9 +23,9 @@ class CourseService {
                 .map(Course::toDTO);
     }
 
-    List<CourseDTO> findCoursesByTeacherId(Long id) {
+    List<CourseDTO> findCoursesByTeacherId(Long teacherId) {
         return courseRepository
-                .findCoursesByTeacherId(id)
+                .findCoursesByTeacherId(teacherId)
                 .map(Course::toDTO);
     }
 }
