@@ -30,7 +30,8 @@ public class UserFacade {
     }
 
     public Option<TeacherDTO> findTeacherById(Long id) {
-        return teacherService.findById(id)
+        return teacherService
+                .findById(id)
                 .map(Teacher::toDTO);
     }
 
