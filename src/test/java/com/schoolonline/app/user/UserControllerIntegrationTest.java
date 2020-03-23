@@ -1,5 +1,7 @@
 package com.schoolonline.app.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.schoolonline.app.user.dto.NewUserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,11 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class UserControllerIntegrationTest {
 
-    private final String validTeacherJsonString = "{"
-            + "\"firstName\":\"Mario\","
-            + "\"lastName\":\"Doe\","
-            + "\"email\":\"mario.doe@example.com\","
-            + "\"password\":\"qwerty123\"}";
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
@@ -28,10 +26,18 @@ class UserControllerIntegrationTest {
     @Test
     @DirtiesContext
     public void shouldAddStudentAndReturn201WhenSendingPostRequest() throws Exception {
+        // given
+        NewUserDTO newUserDTO = new NewUserDTO();
+        newUserDTO.setFirstName("Mario");
+        newUserDTO.setLastName("Doe");
+        newUserDTO.setEmail("mario.doe@example.com");
+        newUserDTO.setPassword("qwerty123");
+        String teacherJson = objectMapper.writeValueAsString(newUserDTO);
+
         // when
         mockMvc.perform(post("/teachers")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(validTeacherJsonString))
+                .content(teacherJson))
 
         // then
         .andExpect(status().isCreated())
