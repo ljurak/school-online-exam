@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
 class CourseConfiguration {
 
     @Bean
-    CourseFacade courseFacade(UserFacade userFacade, CourseRepository courseRepository) {
+    CourseFacade courseFacade(UserFacade userFacade, CourseRepository courseRepository, CourseStudentRepository courseStudentRepository) {
         CourseValidator courseValidator = new CourseValidator(new Validator(), userFacade);
         CourseFactory courseFactory = new CourseFactory(courseValidator, courseRepository);
-        CourseService courseService = new CourseService(courseFactory, courseRepository);
-        return new CourseFacade(courseService);
+        CourseService courseService = new CourseService(courseFactory, courseRepository, courseStudentRepository);
+        return new CourseFacade(courseService, userFacade);
     }
 }
