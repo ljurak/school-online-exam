@@ -2,7 +2,9 @@ package com.schoolonline.app.course;
 
 import com.schoolonline.app.common.utils.ResponseProcessor;
 import com.schoolonline.app.course.dto.CourseDTO;
+import com.schoolonline.app.course.dto.CourseStudentDTO;
 import com.schoolonline.app.course.dto.NewCourseDTO;
+import com.schoolonline.app.course.dto.NewCourseStudentDTO;
 import com.schoolonline.app.course.error.CourseError;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
@@ -33,5 +35,12 @@ class CourseController {
     ResponseEntity<?> findTeacherCourses(@PathVariable long teacherId) {
         List<CourseDTO> courses = courseFacade.findCoursesByTeacherId(teacherId);
         return ResponseEntity.ok(courses);
+    }
+
+    @PostMapping("/courses/{courseId}/students")
+    ResponseEntity<?> addStudentToCourse(@RequestBody NewCourseStudentDTO newCourseStudentDTO, @PathVariable long courseId) {
+        newCourseStudentDTO.setCourseId(courseId);
+        Either<CourseError, CourseStudentDTO> courseStudentDTO = courseFacade.addStudentToCourse(newCourseStudentDTO);
+        return ResponseProcessor.processResponse(courseStudentDTO, HttpStatus.CREATED);
     }
 }
