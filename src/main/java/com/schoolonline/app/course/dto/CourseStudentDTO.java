@@ -6,13 +6,13 @@ public class CourseStudentDTO {
 
     private Long id;
     private Long studentId;
-    private Long courseId;
+    private CourseDTO course;
     private LocalDate enrollDate;
 
-    public CourseStudentDTO(Long id, Long studentId, Long courseId, LocalDate enrollDate) {
+    public CourseStudentDTO(Long id, Long studentId, CourseDTO course, LocalDate enrollDate) {
         this.id = id;
         this.studentId = studentId;
-        this.courseId = courseId;
+        this.course = course;
         this.enrollDate = enrollDate;
     }
 
@@ -24,8 +24,8 @@ public class CourseStudentDTO {
         return studentId;
     }
 
-    public Long getCourseId() {
-        return courseId;
+    public CourseDTO getCourse() {
+        return course;
     }
 
     public LocalDate getEnrollDate() {
