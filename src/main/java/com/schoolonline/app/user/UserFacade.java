@@ -35,6 +35,10 @@ public class UserFacade {
                 .map(Teacher::toDTO);
     }
 
+    public Option<StudentDTO> findStudentById(Long id) {
+        return studentService.findById(id);
+    }
+
     @Transactional
     public void removeStudentById(Long id) {
         studentService.removeStudentById(id);
