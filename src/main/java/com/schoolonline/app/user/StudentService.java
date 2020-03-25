@@ -26,6 +26,12 @@ class StudentService {
                 .map(Student::toDTO);
     }
 
+    Option<StudentDTO> findById(Long id) {
+        return studentRepository
+                .findStudentById(id)
+                .map(Student::toDTO);
+    }
+
     void removeStudentById(Long id) {
         studentRepository.findStudentById(id)
                 .peek(student -> {
