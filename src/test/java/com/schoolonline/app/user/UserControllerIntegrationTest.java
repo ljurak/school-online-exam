@@ -11,8 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -95,6 +94,53 @@ class UserControllerIntegrationTest {
 
     @Test
     @DirtiesContext
+    public void shouldReturnStudentWhenSendingGetRequest() throws Exception {
+        // given
+        NewUserDTO newUserDTO = new NewUserDTO();
+        newUserDTO.setFirstName("Mario");
+        newUserDTO.setLastName("Doe");
+        newUserDTO.setEmail("mario.doe@example.com");
+        newUserDTO.setPassword("qwerty123");
+        String studentJson = objectMapper.writeValueAsString(newUserDTO);
+        mockMvc.perform(post("/students")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(studentJson));
+
+        // when
+        mockMvc.perform(get("/students/{studentId}", Long.valueOf(1L)))
+
+        // then
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.firstName", is("Mario")))
+        .andExpect(jsonPath("$.lastName", is("Doe")));
+    }
+
+    @Test
+    @DirtiesContext
+    public void shouldReturn404WhenStudentNotFound() throws Exception {
+        // given
+        NewUserDTO newUserDTO = new NewUserDTO();
+        newUserDTO.setFirstName("Mario");
+        newUserDTO.setLastName("Doe");
+        newUserDTO.setEmail("mario.doe@example.com");
+        newUserDTO.setPassword("qwerty123");
+        String studentJson = objectMapper.writeValueAsString(newUserDTO);
+        mockMvc.perform(post("/students")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(studentJson));
+
+        // when
+        mockMvc.perform(get("/students/{studentId}", Long.valueOf(4L)))
+
+        // then
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.message", is("Student not found")));
+    }
+
+    @Test
+    @DirtiesContext
     public void shouldAddTeacherAndReturn201WhenPostRequest() throws Exception {
         // given
         NewUserDTO newUserDTO = new NewUserDTO();
@@ -134,6 +180,53 @@ class UserControllerIntegrationTest {
         .andExpect(status().isBadRequest())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.message", is("Missing first name")));
+    }
+
+    @Test
+    @DirtiesContext
+    public void shouldReturnTeacherWhenSendingGetRequest() throws Exception {
+        // given
+        NewUserDTO newUserDTO = new NewUserDTO();
+        newUserDTO.setFirstName("Mario");
+        newUserDTO.setLastName("Doe");
+        newUserDTO.setEmail("mario.doe@example.com");
+        newUserDTO.setPassword("qwerty123");
+        String teacherJson = objectMapper.writeValueAsString(newUserDTO);
+        mockMvc.perform(post("/teachers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(teacherJson));
+
+        // when
+        mockMvc.perform(get("/teachers/{teacherId}", Long.valueOf(1L)))
+
+        // then
+        .andExpect(status().isOk())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.firstName", is("Mario")))
+        .andExpect(jsonPath("$.lastName", is("Doe")));
+    }
+
+    @Test
+    @DirtiesContext
+    public void shouldReturn404WhenTeacherNotFound() throws Exception {
+        // given
+        NewUserDTO newUserDTO = new NewUserDTO();
+        newUserDTO.setFirstName("Mario");
+        newUserDTO.setLastName("Doe");
+        newUserDTO.setEmail("mario.doe@example.com");
+        newUserDTO.setPassword("qwerty123");
+        String teacherJson = objectMapper.writeValueAsString(newUserDTO);
+        mockMvc.perform(post("/teachers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(teacherJson));
+
+        // when
+        mockMvc.perform(get("/teachers/{teacherId}", Long.valueOf(4L)))
+
+        // then
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.message", is("Teacher not found")));
     }
 
     @Test
