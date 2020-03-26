@@ -8,6 +8,7 @@ import com.schoolonline.app.course.error.CourseError;
 import com.schoolonline.app.user.UserFacade;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CourseFacade {
@@ -24,6 +25,10 @@ public class CourseFacade {
     @Transactional
     public Either<CourseError, CourseDTO> addCourse(NewCourseDTO newCourseDTO) {
         return courseService.addCourse(newCourseDTO);
+    }
+
+    public Option<CourseDTO> findCourseById(Long id) {
+        return courseService.findCourseById(id);
     }
 
     public List<CourseDTO> findCoursesByTeacherId(Long teacherId) {
