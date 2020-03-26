@@ -29,14 +29,12 @@ public class UserFacade {
         return teacherService.addTeacher(newUserDTO);
     }
 
-    public Option<TeacherDTO> findTeacherById(Long id) {
-        return teacherService
-                .findById(id)
-                .map(Teacher::toDTO);
-    }
-
     public Option<StudentDTO> findStudentById(Long id) {
         return studentService.findById(id);
+    }
+
+    public Option<TeacherDTO> findTeacherById(Long id) {
+        return teacherService.findById(id);
     }
 
     @Transactional
