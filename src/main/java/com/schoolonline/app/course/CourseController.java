@@ -8,6 +8,7 @@ import com.schoolonline.app.course.dto.NewCourseStudentDTO;
 import com.schoolonline.app.course.error.CourseError;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,12 @@ class CourseController {
     ResponseEntity<?> addCourse(@RequestBody NewCourseDTO newCourseDTO) {
         Either<CourseError, CourseDTO> courseDTO = courseFacade.addCourse(newCourseDTO);
         return ResponseProcessor.processResponse(courseDTO, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/courses/{courseId}")
+    ResponseEntity<?> getCourse(@PathVariable long courseId) {
+        Option<CourseDTO> course = courseFacade.findCourseById(courseId);
+        return ResponseProcessor.processResponse(course, CourseError.COURSE_NOT_FOUND, HttpStatus.OK);
     }
 
     @GetMapping("/teachers/{teacherId}/courses")
