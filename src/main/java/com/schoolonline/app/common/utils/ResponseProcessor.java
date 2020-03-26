@@ -3,6 +3,7 @@ package com.schoolonline.app.common.utils;
 import com.schoolonline.app.common.error.ErrorResponse;
 import com.schoolonline.app.common.error.HttpResponseError;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -12,6 +13,12 @@ public class ResponseProcessor {
         return response
                 .map(body -> new ResponseEntity<>(body, status))
                 .getOrElseGet(ResponseProcessor::createErrorResponse);
+    }
+
+    public static ResponseEntity<?> processResponse(Option<?> response, HttpResponseError error, HttpStatus status) {
+        return response
+                .map(body -> new ResponseEntity<>(body, status))
+                .getOrElse(() -> createErrorResponse(error));
     }
 
     @SuppressWarnings("rawtypes")
