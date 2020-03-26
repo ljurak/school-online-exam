@@ -26,8 +26,10 @@ class TeacherService {
                 .map(Teacher::toDTO);
     }
 
-    Option<Teacher> findById(Long id) {
-        return teacherRepository.findTeacherById(id);
+    Option<TeacherDTO> findById(Long id) {
+        return teacherRepository
+                .findTeacherById(id)
+                .map(Teacher::toDTO);
     }
 
     void removeTeacherById(Long id) {
