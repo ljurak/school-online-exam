@@ -13,7 +13,8 @@ public enum CourseError implements HttpResponseError {
     MISSING_TEACHER_ID("Missing teacher id", 400),
     TEACHER_NOT_FOUND("Teacher not found", 404),
     STUDENT_NOT_FOUND("Student not found", 404),
-    COURSE_NOT_FOUND("Course not found", 404);
+    COURSE_NOT_FOUND("Course not found", 404),
+    STUDENT_ALREADY_SIGNED("Student is already signed for course", 404);
 
     private String errorMessage;
 
