@@ -43,12 +43,20 @@ class CourseService {
 
     Either<CourseError, CourseStudentDTO> addStudentToCourse(NewCourseStudentDTO newCourseStudentDTO) {
         return courseRepository
-                .findCourseById(newCourseStudentDTO.getCourseId())
-                .toEither(CourseError.COURSE_NOT_FOUND)
-                .map(course -> {
-                    CourseStudent courseStudent = CourseStudent.of(newCourseStudentDTO.getStudentId(), course);
-                    return courseStudentRepository.save(courseStudent);
-                })
-                .map(CourseStudent::toDTO);
+            .findCourseById(newCourseStudentDTO.getCourseId())
+            .toEither(CourseError.COURSE_NOT_FOUND)
+            .flatMap(course -> {
+                Option<CourseStudent> courseStudent =
+                        courseStudentRepository.findCourseStudentByStudentIdAndCourse(newCourseStudentDTO.getStudentId(), course);
+                if (courseStudent.isDefined()) {
+                    return Either.left(CourseError.STUDENT_ALREADY_SIGNED);
+                }
+                return Either.right(course);
+            })
+            .map(course -> {
+                CourseStudent courseStudent = CourseStudent.of(newCourseStudentDTO.getStudentId(), course);
+                return courseStudentRepository.save(courseStudent);
+            })
+            .map(CourseStudent::toDTO);
     }
 }
