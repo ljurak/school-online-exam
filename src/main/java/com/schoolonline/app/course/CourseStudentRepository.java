@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 interface CourseStudentRepository extends CrudRepository<CourseStudent, Long> {
 
-    @Query("select cs from CourseStudent cs where cs.studentId = :id and cs.course = :course")
-    Option<CourseStudent> findCourseStudentByStudentIdAndCourse(@Param("id") Long id, @Param("course") Course course);
+    @Query("select cs from CourseStudent cs where cs.studentId = :studentId and cs.course = :course")
+    Option<CourseStudent> findCourseStudentByStudentIdAndCourse(@Param("studentId") Long studentId, @Param("course") Course course);
 }
