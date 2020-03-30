@@ -34,7 +34,7 @@ class Test extends BaseEntity {
         this.activeTo = activeTo;
     }
 
-    static fromDTO(NewTestDTO newTestDTO) {
+    static Test fromDTO(NewTestDTO newTestDTO) {
         return new Test(
                 newTestDTO.getName(),
                 newTestDTO.getCourseId(),
