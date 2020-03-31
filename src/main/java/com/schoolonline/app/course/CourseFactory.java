@@ -19,7 +19,7 @@ class CourseFactory {
         return courseValidator
                 .validateCourse(newCourseDTO)
                 .map(newCourse -> {
-                   Course course = Course.fromDTO(newCourseDTO);
+                   Course course = Course.fromDTO(newCourse);
                    return courseRepository.save(course);
                 });
     }
