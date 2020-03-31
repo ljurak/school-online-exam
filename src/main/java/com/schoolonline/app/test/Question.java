@@ -63,6 +63,6 @@ class Question extends BaseEntity {
     }
 
     QuestionDTO toDTO() {
-        return new QuestionDTO(description, answerA, answerB, answerC, answerD, answer, test.getId());
+        return new QuestionDTO(getId() ,description, answerA, answerB, answerC, answerD, answer, test.getId());
     }
 }
