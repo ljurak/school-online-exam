@@ -2,6 +2,7 @@ package com.schoolonline.app.test;
 
 import com.schoolonline.app.common.entity.BaseEntity;
 import com.schoolonline.app.test.dto.NewTestDTO;
+import com.schoolonline.app.test.dto.TestDTO;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,5 +42,9 @@ class Test extends BaseEntity {
                 newTestDTO.getActiveFrom(),
                 newTestDTO.getActiveTo()
         );
+    }
+
+    TestDTO toDTO() {
+        return new TestDTO(getId(), name, activeFrom, activeTo, courseId);
     }
 }
