@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "QUESTIONS")
 class Question extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String description;
 
     @Column(nullable = false)
@@ -31,7 +31,7 @@ class Question extends BaseEntity {
     private String answerD;
 
     @Column(nullable = false)
-    private QuestionAnswer answer;
+    private QuestionAnswer correctAnswer;
 
     @ManyToOne
     @JoinColumn(name = "TEST_ID", nullable = false)
@@ -40,14 +40,42 @@ class Question extends BaseEntity {
     Question() {
     }
 
-    private Question(String description, String answerA, String answerB, String answerC, String answerD, QuestionAnswer answer, Test test) {
+    private Question(String description, String answerA, String answerB, String answerC, String answerD, QuestionAnswer correctAnswer, Test test) {
         this.description = description;
         this.answerA = answerA;
         this.answerB = answerB;
         this.answerC = answerC;
         this.answerD = answerD;
-        this.answer = answer;
+        this.correctAnswer = correctAnswer;
         this.test = test;
+    }
+
+    String getDescription() {
+        return description;
+    }
+
+    String getAnswerA() {
+        return answerA;
+    }
+
+    String getAnswerB() {
+        return answerB;
+    }
+
+    String getAnswerC() {
+        return answerC;
+    }
+
+    String getAnswerD() {
+        return answerD;
+    }
+
+    QuestionAnswer getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    Test getTest() {
+        return test;
     }
 
     static Question of(NewQuestionDTO newQuestionDTO, Test test) {
@@ -57,12 +85,12 @@ class Question extends BaseEntity {
                 newQuestionDTO.getAnswerB(),
                 newQuestionDTO.getAnswerC(),
                 newQuestionDTO.getAnswerD(),
-                newQuestionDTO.getAnswer(),
+                newQuestionDTO.getCorrectAnswer(),
                 test
         );
     }
 
     QuestionDTO toDTO() {
-        return new QuestionDTO(getId() ,description, answerA, answerB, answerC, answerD, answer, test.getId());
+        return new QuestionDTO(getId() ,description, answerA, answerB, answerC, answerD, correctAnswer, test.getId());
     }
 }
