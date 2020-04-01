@@ -7,7 +7,7 @@ public class NewQuestionDTO {
     private String answerB;
     private String answerC;
     private String answerD;
-    private QuestionAnswer answer;
+    private QuestionAnswer correctAnswer;
     private Long testId;
 
     public String getDescription() {
@@ -50,12 +50,12 @@ public class NewQuestionDTO {
         this.answerD = answerD;
     }
 
-    public QuestionAnswer getAnswer() {
-        return answer;
+    public QuestionAnswer getCorrectAnswer() {
+        return correctAnswer;
     }
 
-    public void setAnswer(QuestionAnswer answer) {
-        this.answer = answer;
+    public void setCorrectAnswer(QuestionAnswer correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 
     public Long getTestId() {
