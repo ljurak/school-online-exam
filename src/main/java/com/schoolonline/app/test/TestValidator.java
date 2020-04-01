@@ -2,6 +2,7 @@ package com.schoolonline.app.test;
 
 import com.schoolonline.app.common.utils.Validator;
 import com.schoolonline.app.course.CourseFacade;
+import com.schoolonline.app.test.dto.NewQuestionDTO;
 import com.schoolonline.app.test.dto.NewTestDTO;
 import com.schoolonline.app.test.error.TestError;
 import io.vavr.control.Either;
@@ -12,7 +13,7 @@ class TestValidator {
 
     private CourseFacade courseFacade;
 
-    public TestValidator(Validator validator, CourseFacade courseFacade) {
+    TestValidator(Validator validator, CourseFacade courseFacade) {
         this.validator = validator;
         this.courseFacade = courseFacade;
     }
@@ -22,6 +23,12 @@ class TestValidator {
                 .flatMap(this::validateActiveFrom)
                 .flatMap(this::validateActiveTo)
                 .flatMap(this::validateCourseId);
+    }
+
+    Either<TestError, NewQuestionDTO> validateQuestion(NewQuestionDTO newQuestionDTO) {
+        return validateDescription(newQuestionDTO)
+                .flatMap(this::validateAnswers)
+                .flatMap(this::validateCorrectAnswer);
     }
 
     private Either<TestError, NewTestDTO> validateName(NewTestDTO newTestDTO) {
@@ -62,5 +69,42 @@ class TestValidator {
         }
 
         return Either.right(newTestDTO);
+    }
+
+    private Either<TestError, NewQuestionDTO> validateDescription(NewQuestionDTO newQuestionDTO) {
+        if (validator.isBlank(newQuestionDTO.getDescription())) {
+            return Either.left(TestError.MISSING_DESCRIPTION);
+        } else if (!validator.hasMaxLength(newQuestionDTO.getDescription(), 1000)) {
+            return Either.left(TestError.INVALID_DESCRIPTION);
+        }
+
+        return Either.right(newQuestionDTO);
+    }
+
+    private Either<TestError, NewQuestionDTO> validateAnswers(NewQuestionDTO newQuestionDTO) {
+        String[] answers = new String[] {
+                newQuestionDTO.getAnswerA(),
+                newQuestionDTO.getAnswerB(),
+                newQuestionDTO.getAnswerC(),
+                newQuestionDTO.getAnswerD()
+        };
+
+        for (String answer : answers) {
+            if (validator.isBlank(answer)) {
+                return Either.left(TestError.MISSING_ANSWERS);
+            } else if (!validator.hasMaxLength(answer, 255)) {
+                return Either.left(TestError.INVALID_ANSWERS);
+            }
+        }
+
+        return Either.right(newQuestionDTO);
+    }
+
+    private Either<TestError, NewQuestionDTO> validateCorrectAnswer(NewQuestionDTO newQuestionDTO) {
+        if (validator.isNull(newQuestionDTO.getCorrectAnswer())) {
+            return Either.left(TestError.MISSING_CORRECT_ANSWER);
+        }
+
+        return Either.right(newQuestionDTO);
     }
 }
