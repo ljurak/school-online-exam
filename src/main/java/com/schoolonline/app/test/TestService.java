@@ -11,7 +11,7 @@ class TestService {
 
     private TestRepository testRepository;
 
-    public TestService(TestFactory testFactory, TestRepository testRepository) {
+    TestService(TestFactory testFactory, TestRepository testRepository) {
         this.testFactory = testFactory;
         this.testRepository = testRepository;
     }
